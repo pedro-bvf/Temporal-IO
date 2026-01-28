@@ -1,7 +1,7 @@
 package com.example.spring_temporal.workflow;
 
 import com.example.spring_temporal.activities.OrderActivities;
-import com.example.spring_temporal.data.OrderResult;
+import com.example.spring_temporal.data.Order;
 import io.temporal.activity.ActivityOptions;
 import io.temporal.common.RetryOptions;
 import io.temporal.workflow.Workflow;
@@ -25,12 +25,12 @@ public class OrderWorkflowImpl implements OrderWorkflow {
     Workflow.newActivityStub(OrderActivities.class, activityOptions);
 
   @Override
-  public OrderResult processOrder(String orderId) {
+  public Order processOrder(String orderId) {
     // Workflow é determinístico: sem I/O direto aqui.
     activities.reserveStock(orderId);
     activities.chargePayment(orderId);
     activities.sendConfirmationEmail(orderId);
 
-    return new OrderResult(orderId, "CONFIRMED");
+    return new Order(orderId, "CONFIRMED");
   }
 }
