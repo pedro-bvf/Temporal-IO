@@ -30,7 +30,7 @@ docker compose up -d
 
 Temporal UI will be available at:
 ```bash
-http://localhost:8088
+open http://localhost:8088
 ```
 ## 3- Run the application
 ```bash
