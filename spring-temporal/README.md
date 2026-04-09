@@ -1,6 +1,6 @@
 # Temporal Spring Boot Demo
 
-This example demonstrates how to use [Temporal.io](https://temporal.io/) with **Spring Boot (Java 25)** to orchestrate asynchronous and resilient processes using Workflows and Activities.
+This example demonstrates how to use [Temporal.io](https://temporal.io/) with **Spring Boot (Java 21)** to orchestrate asynchronous and resilient processes using Workflows and Activities.
 The project exposes a simple REST API to initiate processing of a request and query the result.
 
 ## 1- Architecture
