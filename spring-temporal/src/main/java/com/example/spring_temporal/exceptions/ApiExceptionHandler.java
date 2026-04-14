@@ -9,6 +9,17 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+  @ExceptionHandler(WorkflowStartException.class)
+  public ResponseEntity<Map<String, String>> handleWorkflowStartException(
+    WorkflowStartException ex
+  ) {
+    return ResponseEntity.badRequest().body(Map.of(
+      "orderId", ex.getOrderId(),
+      "message", ex.getMessage(),
+      "error", ex.getCause().getClass().getSimpleName()
+    ));
+  }
+
   @ExceptionHandler(WorkflowNotCompletedException.class)
   public ResponseEntity<Map<String, String>> handleWorkflowNotCompleted(
     WorkflowNotCompletedException ex

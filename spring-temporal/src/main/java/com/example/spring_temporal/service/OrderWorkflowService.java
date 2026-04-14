@@ -5,6 +5,7 @@ import com.example.spring_temporal.data.Order;
 import com.example.spring_temporal.data.OrderResultResponse;
 import com.example.spring_temporal.data.StartOrderResponse;
 import com.example.spring_temporal.exceptions.WorkflowNotCompletedException;
+import com.example.spring_temporal.exceptions.WorkflowStartException;
 import com.example.spring_temporal.workflow.OrderWorkflow;
 import io.temporal.api.common.v1.WorkflowExecution;
 import io.temporal.client.WorkflowClient;
@@ -22,17 +23,21 @@ public class OrderWorkflowService {
   public StartOrderResponse startOrder(String orderId) {
     String workflowId = "order-" + orderId;
 
-    OrderWorkflow workflow = client.newWorkflowStub(
-      OrderWorkflow.class,
-      WorkflowOptions.newBuilder()
-        .setTaskQueue(TemporalConfig.TASK_QUEUE)
-        .setWorkflowId(workflowId)
-        .build()
-    );
+    try {
+      OrderWorkflow workflow = client.newWorkflowStub(
+        OrderWorkflow.class,
+        WorkflowOptions.newBuilder()
+          .setTaskQueue(TemporalConfig.TASK_QUEUE)
+          .setWorkflowId(workflowId)
+          .build()
+      );
 
-    WorkflowExecution exec = WorkflowClient.start(workflow::processOrder, orderId);
+      WorkflowExecution exec = WorkflowClient.start(workflow::processOrder, orderId);
 
-    return new StartOrderResponse(workflowId, exec.getRunId());
+      return new StartOrderResponse(workflowId, exec.getRunId());
+    } catch (Exception ex) {
+      throw new WorkflowStartException(orderId, ex);
+    }
   }
 
   public OrderResultResponse getResultBlocking(String workflowId) {
