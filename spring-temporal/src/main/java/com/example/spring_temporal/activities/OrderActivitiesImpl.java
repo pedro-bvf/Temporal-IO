@@ -1,5 +1,6 @@
 package com.example.spring_temporal.activities;
 
+import io.temporal.failure.ApplicationFailure;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,11 +14,17 @@ public class OrderActivitiesImpl implements OrderActivities {
   public void chargePayment(String orderId) {
     System.out.println("[Activity] Cobrando pagamento: " + orderId);
 
-    // Falha temporária (vai retentar):
-    // throw ApplicationFailure.newFailure("Falha temporária no gateway", "GATEWAY_ERROR");
+    // Falha temporaria (vai retentar):
+    if (orderId.startsWith("FAIL-RETRY")) {
+      throw ApplicationFailure.newFailure("Falha temporária no gateway", "GATEWAY_ERROR");
+    }
 
-    // Falha de negócio (não retenta se estiver em doNotRetry):
-    // throw ApplicationFailure.newNonRetryableFailure("Pagamento recusado", "PAYMENT_DECLINED");
+    // Falha de negocio (nao retenta se estiver em doNotRetry):
+    if (orderId.startsWith("FAIL-NORETRY")) {
+      throw ApplicationFailure.newNonRetryableFailure("Pagamento recusado", "PAYMENT_DECLINED");
+    }
+
+    System.out.println("[Activity] Pagamento aprovado: " + orderId);
   }
 
   @Override
