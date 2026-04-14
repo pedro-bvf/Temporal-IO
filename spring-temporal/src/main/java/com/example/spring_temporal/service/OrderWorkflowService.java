@@ -1,5 +1,6 @@
 package com.example.spring_temporal.service;
 
+import com.example.spring_temporal.config.TemporalConfig;
 import com.example.spring_temporal.data.Order;
 import com.example.spring_temporal.data.OrderResultResponse;
 import com.example.spring_temporal.data.StartOrderResponse;
@@ -24,7 +25,7 @@ public class OrderWorkflowService {
     OrderWorkflow workflow = client.newWorkflowStub(
       OrderWorkflow.class,
       WorkflowOptions.newBuilder()
-        .setTaskQueue("TEMPORAL_TASK_QUEUE")
+        .setTaskQueue(TemporalConfig.TASK_QUEUE)
         .setWorkflowId(workflowId)
         .build()
     );
