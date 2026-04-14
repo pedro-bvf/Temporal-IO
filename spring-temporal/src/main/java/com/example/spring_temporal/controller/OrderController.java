@@ -16,7 +16,7 @@ public class OrderController {
   @PostMapping("/{orderId}")
   public ResponseEntity<StartOrderResponse> start(@PathVariable String orderId) {
     var startOrder = service.startOrder(orderId);
-    return ResponseEntity.ok(startOrder);
+    return ResponseEntity.accepted().body(startOrder);
   }
 
   @GetMapping("/{workflowId}")
