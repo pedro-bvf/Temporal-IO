@@ -1,4 +1,4 @@
-package com.example.spring_temporal.service;
+package com.example.spring_temporal.client;
 
 import com.example.spring_temporal.config.TemporalConfig;
 import com.example.spring_temporal.data.OrderDTO;
@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class OrderWorkflowService {
+public class OrderWorkflowClient {
 
   private final WorkflowClient client;
 
-  public StartOrderResponseDTO startOrder(String orderId) {
+  public StartOrderResponseDTO startWorkFlow(String orderId) {
     String workflowId = "order-" + orderId;
 
     try {
@@ -40,10 +40,10 @@ public class OrderWorkflowService {
     }
   }
 
-  public OrderResultResponseDTO getResultBlocking(String workflowId) {
+  public OrderResultResponseDTO getOrderResultBlocking(String workflowId) {
     try {
       WorkflowStub stub = client.newUntypedWorkflowStub(workflowId);
-      OrderDTO result = stub.getResult(OrderDTO.class);// bloqueia até terminar
+      OrderDTO result = stub.getResult(OrderDTO.class);
       return new OrderResultResponseDTO(workflowId, result.status());
     } catch (Exception ex) {
       throw new WorkflowNotCompletedException(workflowId, ex);
