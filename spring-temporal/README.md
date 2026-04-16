@@ -36,3 +36,7 @@ open http://localhost:8088
 ```bash
 mvn spring-boot:run
 ```
+## 4- Swagger will be available at:
+```bash
+open http://localhost:8080/swagger-ui/index.html
+```
