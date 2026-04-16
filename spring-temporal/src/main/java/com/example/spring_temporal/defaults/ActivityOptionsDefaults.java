@@ -38,7 +38,7 @@ public class ActivityOptionsDefaults {
       Duration.ofSeconds(1),
       2.0,
       Duration.ofSeconds(30),
-      5
+      3
     );
 
     return activityOptions(
