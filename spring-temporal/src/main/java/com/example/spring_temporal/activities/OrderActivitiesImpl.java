@@ -7,28 +7,34 @@ import org.springframework.stereotype.Component;
 public class OrderActivitiesImpl implements OrderActivities {
   @Override
   public void reserveStock(String orderId) {
-    System.out.println("[Activity] Reservando stock: " + orderId);
+    System.out.println("[Activity] Reserving stock: " + orderId);
   }
 
   @Override
   public void chargePayment(String orderId) {
-    System.out.println("[Activity] Cobrando pagamento: " + orderId);
+    System.out.println("[Activity] Charging payment: " + orderId);
 
     // Falha temporaria (vai retentar):
     if (orderId.startsWith("FAIL-RETRY")) {
-      throw ApplicationFailure.newFailure("Falha temporária no gateway", "GATEWAY_ERROR");
+      throw ApplicationFailure.newFailure(
+        "Temporary payment gateway failure",
+        "GATEWAY_ERROR"
+      );
     }
 
     // Falha de negocio (nao retenta se estiver em doNotRetry):
     if (orderId.startsWith("FAIL-NORETRY")) {
-      throw ApplicationFailure.newNonRetryableFailure("Pagamento recusado", "PAYMENT_DECLINED");
+      throw ApplicationFailure.newNonRetryableFailure(
+        "Payment declined",
+        "PAYMENT_DECLINED"
+      );
     }
 
-    System.out.println("[Activity] Pagamento aprovado: " + orderId);
+    System.out.println("[Activity] Payment approved: " + orderId);
   }
 
   @Override
   public void sendConfirmationEmail(String orderId) {
-    System.out.println("[Activity] Email de confirmação: " + orderId);
+    System.out.println("[Activity] Sending confirmation email: " + orderId);
   }
 }

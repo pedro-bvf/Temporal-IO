@@ -7,8 +7,10 @@ import io.temporal.activity.ActivityMethod;
 public interface OrderActivities {
   @ActivityMethod
   void reserveStock(String orderId);
+
   @ActivityMethod
   void chargePayment(String orderId);
+
   @ActivityMethod
   void sendConfirmationEmail(String orderId);
 }
