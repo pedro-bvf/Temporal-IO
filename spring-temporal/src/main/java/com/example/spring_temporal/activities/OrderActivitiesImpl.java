@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 public class OrderActivitiesImpl implements OrderActivities {
   @Override
   public void reserveStock(String orderId) {
+    //REST call to stock service to reserve items (simulated here with a print statement)
     System.out.println("[Activity] Reserving stock: " + orderId);
   }
 
   @Override
   public void chargePayment(String orderId) {
+    //REST call to payment gateway to charge the customer (simulated here with a print statement)
     System.out.println("[Activity] Charging payment: " + orderId);
 
     // Falha temporaria (vai retentar):
@@ -22,7 +24,7 @@ public class OrderActivitiesImpl implements OrderActivities {
       );
     }
 
-    // Falha de negocio (nao retenta se estiver em doNotRetry):
+    // Falha de negocio (nao retenta se estiver em FAIL-NORETRY):
     if (orderId.startsWith("FAIL-NORETRY")) {
       throw ApplicationFailure.newNonRetryableFailure(
         "Payment declined",
@@ -35,6 +37,7 @@ public class OrderActivitiesImpl implements OrderActivities {
 
   @Override
   public void sendConfirmationEmail(String orderId) {
+    //Kafka message to email service to send confirmation email (simulated here with a print statement)
     System.out.println("[Activity] Sending confirmation email: " + orderId);
   }
 }

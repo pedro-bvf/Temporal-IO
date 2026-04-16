@@ -1,6 +1,6 @@
 package com.example.spring_temporal.data;
 
-public record StartOrderResponse(
+public record StartOrderResponseDTO(
   String workflowId, String runId
 ) {
 }

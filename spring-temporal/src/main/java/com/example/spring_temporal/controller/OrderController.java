@@ -1,7 +1,7 @@
 package com.example.spring_temporal.controller;
 
-import com.example.spring_temporal.data.OrderResultResponse;
-import com.example.spring_temporal.data.StartOrderResponse;
+import com.example.spring_temporal.data.OrderResultResponseDTO;
+import com.example.spring_temporal.data.StartOrderResponseDTO;
 import com.example.spring_temporal.service.OrderWorkflowService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ public class OrderController {
   private final OrderWorkflowService service;
 
   @PostMapping("/{orderId}")
-  public ResponseEntity<StartOrderResponse> start(@PathVariable String orderId) {
+  public ResponseEntity<StartOrderResponseDTO> start(@PathVariable String orderId) {
     var startOrder = service.startOrder(orderId);
     return ResponseEntity.accepted().body(startOrder);
   }
 
   @GetMapping("/{workflowId}")
-  public ResponseEntity<OrderResultResponse> result(@PathVariable String workflowId) {
+  public ResponseEntity<OrderResultResponseDTO> result(@PathVariable String workflowId) {
     var result = service.getResultBlocking(workflowId);
     return ResponseEntity.ok(result);
   }
