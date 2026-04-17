@@ -1,5 +1,6 @@
 package com.example.spring_temporal.activities;
 
+import io.temporal.activity.Activity;
 import io.temporal.failure.ApplicationFailure;
 import org.springframework.stereotype.Component;
 
@@ -8,13 +9,15 @@ public class OrderActivitiesImpl implements OrderActivities {
   @Override
   public void reserveStock(String orderId) {
     //REST call to stock service to reserve items (simulated here with a print statement)
-    System.out.println("[Activity] Reserving stock: " + orderId);
+    int attempt = Activity.getExecutionContext().getInfo().getAttempt();
+    System.out.println("[Activity] Reserving stock (attempt " + attempt + "): " + orderId);
   }
 
   @Override
   public void chargePayment(String orderId) {
     //REST call to payment gateway to charge the customer (simulated here with a print statement)
-    System.out.println("[Activity] Charging payment: " + orderId);
+    int attempt = Activity.getExecutionContext().getInfo().getAttempt();
+    System.out.println("[Activity] Charging payment (attempt " + attempt + "): " + orderId);
 
     // Temporary failure (will retry):
     if (orderId.startsWith("FAIL-RETRY")) {
@@ -38,6 +41,7 @@ public class OrderActivitiesImpl implements OrderActivities {
   @Override
   public void sendConfirmationEmail(String orderId) {
     //Kafka message to email service to send confirmation email (simulated here with a print statement)
-    System.out.println("[Activity] Sending confirmation email: " + orderId);
+    int attempt = Activity.getExecutionContext().getInfo().getAttempt();
+    System.out.println("[Activity] Sending confirmation email (attempt " + attempt + "): " + orderId);
   }
 }
