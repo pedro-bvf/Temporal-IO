@@ -16,7 +16,7 @@ public class OrderActivitiesImpl implements OrderActivities {
     //REST call to payment gateway to charge the customer (simulated here with a print statement)
     System.out.println("[Activity] Charging payment: " + orderId);
 
-    // Falha temporaria (vai retentar):
+    // Temporary failure (will retry):
     if (orderId.startsWith("FAIL-RETRY")) {
       throw ApplicationFailure.newFailure(
         "Temporary payment gateway failure",
@@ -24,7 +24,7 @@ public class OrderActivitiesImpl implements OrderActivities {
       );
     }
 
-    // Falha de negocio (nao retenta se estiver em FAIL-NORETRY):
+    // Business failure (do not retry if in FAIL-NORETRY):
     if (orderId.startsWith("FAIL-NORETRY")) {
       throw ApplicationFailure.newNonRetryableFailure(
         "Payment declined",
